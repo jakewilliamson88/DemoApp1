@@ -1,5 +1,5 @@
 """
-This file contains the callback route for the OAuth2.0 flow.
+This file contains the auth routes for the application.
 """
 
 from fastapi import APIRouter
@@ -12,3 +12,8 @@ router = APIRouter(
 @router.get("/")
 def get_auth():
     return "OK"
+
+
+@router.post("/login")
+def login(body):
+    return
