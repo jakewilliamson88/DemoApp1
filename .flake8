@@ -1,0 +1,10 @@
+[flake8]
+ignore =
+    # Module level import not at top of file (E402)
+    E402,
+    # Line too long (82 > 79 characters) (E501)
+    E501,
+    # Do not assign a lambda expression, use a def (E731)
+    E731,
+    # Line break occurred before a binary operator (W503)
+    W503
