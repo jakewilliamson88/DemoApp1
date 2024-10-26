@@ -9,9 +9,9 @@ router = APIRouter(
 )
 
 
-@router.get("/")
-def get_auth():
-    return "OK"
+@router.post("/register")
+def register(body):
+    return
 
 
 @router.post("/login")
