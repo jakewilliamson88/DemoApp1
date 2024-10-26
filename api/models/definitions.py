@@ -50,3 +50,18 @@ class TodoItem(BaseModel):
     completed: bool = Field(
         False, description="Whether the todo item is completed or not"
     )
+
+
+class AuthRequest(BaseModel):
+    email: EmailStr = Field(
+        ...,
+        max_length=50,
+        title="Email Address",
+        description="The user's email address",
+    )
+    password: NonEmptyString = Field(
+        ...,
+        max_length=50,
+        title="Password",
+        description="The user's password",
+    )

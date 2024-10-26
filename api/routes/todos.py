@@ -20,7 +20,7 @@ def get_todos() -> list[TodoItem]:
 
 
 @router.get("/{todo_id}")
-def get_todo(todo_id: TodoItem.todo_id) -> TodoItem:
+def get_todo(todo_id: int) -> TodoItem:
     return TodoItem(
         todo_id=todo_id,
         title="Finish this route",
@@ -35,7 +35,7 @@ def create_todo() -> None:
 
 
 @router.patch("/{todo_id}")
-def update_todo(todo_id: TodoItem.todo_id) -> TodoItem:
+def update_todo(todo_id: int) -> TodoItem:
     return TodoItem(
         todo_id=todo_id,
         title="Finish this route",
@@ -45,5 +45,5 @@ def update_todo(todo_id: TodoItem.todo_id) -> TodoItem:
 
 
 @router.delete("/{todo_id}")
-def delete_todo(todo_id: TodoItem.todo_id) -> None:
+def delete_todo(todo_id: int) -> None:
     return
