@@ -11,9 +11,9 @@ class User(BaseModel):
         str_to_lower=True,
     )
 
-    id: int = Field(
+    user_id: int = Field(
         ...,
-        alias="userId",
+        alias="id",
     )
     username: NonEmptyString = Field(
         ...,
@@ -29,6 +29,12 @@ class User(BaseModel):
 
 
 class TodoItem(BaseModel):
+    todo_id: int = Field(
+        ...,
+        alias="id",
+        title="The id of the todo item",
+        description="The id of the todo item",
+    )
     title: str = Field(
         ...,
         min_length=1,
