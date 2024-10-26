@@ -29,6 +29,12 @@ class User(BaseModel):
 
 
 class TodoItem(BaseModel):
+    todo_id: int = Field(
+        ...,
+        alias="id",
+        title="The id of the todo item",
+        description="The id of the todo item",
+    )
     title: str = Field(
         ...,
         min_length=1,
