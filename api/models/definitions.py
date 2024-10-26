@@ -11,9 +11,9 @@ class User(BaseModel):
         str_to_lower=True,
     )
 
-    id: int = Field(
+    user_id: int = Field(
         ...,
-        alias="userId",
+        alias="id",
     )
     username: NonEmptyString = Field(
         ...,
