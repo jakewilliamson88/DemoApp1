@@ -15,12 +15,6 @@ class User(BaseModel):
         ...,
         alias="id",
     )
-    username: NonEmptyString = Field(
-        ...,
-        max_length=50,
-        title="The username of the user",
-        description="The username of the user",
-    )
     email: EmailStr = Field(
         ...,
         title="The email of the user",
