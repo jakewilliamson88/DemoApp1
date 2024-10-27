@@ -5,7 +5,7 @@ This file contains the auth routes for the application.
 from fastapi import APIRouter, HTTPException
 
 from api.constants import USER_POOL_ID
-from api.models.definitions import AccessToken, AuthRequest
+from api.models.definitions import AccessToken, AuthRequest, User
 from api.utils import get_sessioned_boto3, init_logger
 
 router = APIRouter(
@@ -20,8 +20,25 @@ logger = init_logger()
 boto3 = get_sessioned_boto3()
 
 
-def auth_user(username, password):
-    pass
+def get_user(token: AccessToken) -> User:
+    """
+    Get the user from the Cognito User Pool.
+    :param token:
+    :return:
+    """
+
+    # Get a cognito client.
+    client = boto3.client("cognito-idp")
+
+    # Get the user from the Cognito User Pool.
+    try:
+        response = client.get_user(AccessToken=token.token)
+    except client.exceptions.NotAuthorizedException:
+        logger.error("User not authorized")
+        raise HTTPException(status_code=401, detail="User not authorized.")
+
+    # TODO: Set ID when introducing DynamoDB.
+    return User(email=response["Username"], id=0)
 
 
 @router.post("/register")
@@ -102,7 +119,6 @@ def login(body: AuthRequest) -> AccessToken:
                 "PASSWORD": body.password,
             },
         )
-        logger.info(response)
     except cognito_client.exceptions.UserNotFoundException:
         logger.error(f"User {body.email} not authorized")
         raise HTTPException(status_code=401, detail="User not authorized.")
@@ -111,4 +127,7 @@ def login(body: AuthRequest) -> AccessToken:
 
     # Return the access token.
     access_token = response["AuthenticationResult"]["AccessToken"]
+
+    get_user(AccessToken(token=access_token))
+
     return AccessToken(token=access_token)
