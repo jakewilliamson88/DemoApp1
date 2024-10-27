@@ -58,10 +58,20 @@ class AuthRequest(BaseModel):
         max_length=50,
         title="Email Address",
         description="The user's email address",
+        examples=["foo@bar.com"],
     )
     password: NonEmptyString = Field(
         ...,
         max_length=50,
         title="Password",
         description="The user's password",
+        examples=["ABCabc123!@#"],
+    )
+
+
+class AuthResponse(BaseModel):
+    token: str = Field(
+        ...,
+        title="Token",
+        description="The user's token",
     )
