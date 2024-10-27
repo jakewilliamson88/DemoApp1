@@ -11,16 +11,6 @@ class User(BaseModel):
         str_to_lower=True,
     )
 
-    user_id: int = Field(
-        ...,
-        alias="id",
-    )
-    username: NonEmptyString = Field(
-        ...,
-        max_length=50,
-        title="The username of the user",
-        description="The username of the user",
-    )
     email: EmailStr = Field(
         ...,
         title="The email of the user",
@@ -29,6 +19,11 @@ class User(BaseModel):
 
 
 class TodoItem(BaseModel):
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+
     todo_id: int = Field(
         ...,
         alias="id",
@@ -50,3 +45,29 @@ class TodoItem(BaseModel):
     completed: bool = Field(
         False, description="Whether the todo item is completed or not"
     )
+
+
+class AuthRequest(BaseModel):
+    email: EmailStr = Field(
+        ...,
+        max_length=50,
+        title="Email Address",
+        description="The user's email address",
+        examples=["foo@bar.com"],
+    )
+    password: NonEmptyString = Field(
+        ...,
+        max_length=50,
+        title="Password",
+        description="The user's password",
+        examples=["ABCabc123!@#"],
+    )
+
+
+class AccessToken(BaseModel):
+    access_token: str = Field(
+        ...,
+        title="Token",
+        description="The user's access token",
+    )
+    token_type: str = "Bearer"
