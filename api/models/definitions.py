@@ -19,6 +19,11 @@ class User(BaseModel):
 
 
 class TodoItem(BaseModel):
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+    )
+
     todo_id: int = Field(
         ...,
         alias="id",
@@ -60,8 +65,9 @@ class AuthRequest(BaseModel):
 
 
 class AccessToken(BaseModel):
-    token: str = Field(
+    access_token: str = Field(
         ...,
         title="Token",
         description="The user's access token",
     )
+    token_type: str = "Bearer"

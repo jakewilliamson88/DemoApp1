@@ -15,7 +15,7 @@ logger = init_logger()
 
 @router.get("/")
 def get_todos(user: AuthDependency) -> list[TodoItem]:
-    logger.info(user)
+    logger.info(f"{user=}")
     return [
         TodoItem(
             todo_id=0,
@@ -27,7 +27,7 @@ def get_todos(user: AuthDependency) -> list[TodoItem]:
 
 
 @router.get("/{todo_id}")
-def get_todo(todo_id: int) -> TodoItem:
+def get_todo(user: AuthDependency, todo_id: int) -> TodoItem:
     return TodoItem(
         todo_id=todo_id,
         title="Finish this route",
@@ -37,12 +37,12 @@ def get_todo(todo_id: int) -> TodoItem:
 
 
 @router.post("/")
-def create_todo() -> None:
+def create_todo(user: AuthDependency) -> None:
     return
 
 
 @router.patch("/{todo_id}")
-def update_todo(todo_id: int) -> TodoItem:
+def update_todo(user: AuthDependency, todo_id: int) -> TodoItem:
     return TodoItem(
         todo_id=todo_id,
         title="Finish this route",
@@ -52,6 +52,6 @@ def update_todo(todo_id: int) -> TodoItem:
 
 
 @router.delete("/{todo_id}")
-def delete_todo(todo_id: int) -> None:
+def delete_todo(user: AuthDependency, todo_id: int) -> None:
     logger.info(todo_id)
     return

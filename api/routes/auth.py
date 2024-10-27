@@ -26,8 +26,8 @@ boto3 = get_sessioned_boto3()
 OAuth2Scheme = Annotated[OAuth2PasswordRequestForm, Depends()]
 
 # Token dependency.
-oauh2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/login")
-TokenDependency = Annotated[AccessToken, Depends(oauh2_bearer)]
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/login")
+TokenDependency = Annotated[str, Depends(oauth2_bearer)]
 
 
 def get_user(token: TokenDependency) -> User:
@@ -40,9 +40,11 @@ def get_user(token: TokenDependency) -> User:
     # Get a cognito client.
     client = boto3.client("cognito-idp")
 
+    logger.info(f"{token=}")
+
     # Get the user from the Cognito User Pool.
     try:
-        response = client.get_user(AccessToken=token.token)
+        response = client.get_user(AccessToken=token)
     except client.exceptions.NotAuthorizedException:
         logger.error("User not authorized")
         raise HTTPException(status_code=401, detail="User not authorized.")
@@ -101,8 +103,8 @@ def register(body: AuthRequest):
     logger.info(f"User {body.email} registered successfully")
 
 
-@router.post("/login", response_model=AccessToken)
-def login(body: OAuth2Scheme) -> AccessToken:
+@router.post("/login")
+def login(body: OAuth2Scheme) -> dict:
     # Get a cognito client.
     cognito_client = boto3.client("cognito-idp")
 
@@ -143,7 +145,6 @@ def login(body: OAuth2Scheme) -> AccessToken:
 
     # Return the access token.
     access_token = response["AuthenticationResult"]["AccessToken"]
+    response = AccessToken(access_token=access_token)
 
-    get_user(AccessToken(token=access_token))
-
-    return AccessToken(token=access_token)
+    return response.model_dump()
