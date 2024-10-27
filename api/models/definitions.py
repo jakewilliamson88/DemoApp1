@@ -20,15 +20,13 @@ class User(Dyntastic):
         str_to_lower=True,
     )
 
-    user_id: int = Field(
-        ...,
-        default_factory=lambda: uuid4().int,
-        alias="id",
+    user_id: str | None = Field(
+        default_factory=lambda: str(uuid4()),
         title="The id of the user",
         description="The id of the user",
     )
 
-    email: EmailStr = Field(
+    email: str = Field(
         ...,
         title="The email of the user",
         description="The email of the user",
