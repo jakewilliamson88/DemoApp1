@@ -40,8 +40,6 @@ def get_user(token: TokenDependency) -> User:
     # Get a cognito client.
     client = boto3.client("cognito-idp")
 
-    logger.info(f"{token=}")
-
     # Get the user from the Cognito User Pool.
     try:
         response = client.get_user(AccessToken=token)
@@ -73,13 +71,12 @@ def register(body: AuthRequest):
 
     # Register the user in Cognito.
     try:
-        response = client.admin_create_user(
+        client.admin_create_user(
             UserPoolId=USER_POOL_ID,
             Username=body.email,
             TemporaryPassword=body.password,
             MessageAction="SUPPRESS",
         )
-        logger.info(response)
     except client.exceptions.UsernameExistsException:
         logger.error(f"User {body.email} already exists")
         raise HTTPException(status_code=400, detail="User already exists.")

@@ -1,14 +1,31 @@
+from uuid import uuid4
+
+from dyntastic import Dyntastic
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+from api.constants import TODO_TABLE_NAME, USER_TABLE_NAME
 from api.models.types import NonEmptyString
 
 
-class User(BaseModel):
+class User(Dyntastic):
+
+    # Table settings.
+    __table_name__ = USER_TABLE_NAME
+    __hash_key__ = "email"
+
     # Configure model to allow population by field name
     # and convert all string fields (username, email) to lowercase
     model_config = ConfigDict(
         populate_by_name=True,
         str_to_lower=True,
+    )
+
+    user_id: int = Field(
+        ...,
+        default_factory=lambda: uuid4().int,
+        alias="id",
+        title="The id of the user",
+        description="The id of the user",
     )
 
     email: EmailStr = Field(
@@ -20,6 +37,11 @@ class User(BaseModel):
 
 class TodoItem(BaseModel):
 
+    # Table settings.
+    __table_name__ = TODO_TABLE_NAME
+    __hash_key__ = "todo_id"
+
+    # Allow the model to be populated by field name.
     model_config = ConfigDict(
         populate_by_name=True,
     )
