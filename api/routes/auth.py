@@ -40,8 +40,6 @@ def get_user(token: TokenDependency) -> User:
     # Get a cognito client.
     client = boto3.client("cognito-idp")
 
-    logger.info(f"{token=}")
-
     # Get the user from the Cognito User Pool.
     try:
         response = client.get_user(AccessToken=token)
@@ -49,8 +47,16 @@ def get_user(token: TokenDependency) -> User:
         logger.error("User not authorized")
         raise HTTPException(status_code=401, detail="User not authorized.")
 
-    # TODO: Set ID when introducing DynamoDB.
-    return User(email=response["Username"], id=0)
+    # Get the User from Dynamo.
+    email = response["Username"]
+    user = User.safe_get(email)
+
+    # If the user is not found, raise an error.
+    if not user:
+        logger.error(f"User {email} not found")
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    return user
 
 
 # Dependency for route access.
@@ -73,13 +79,12 @@ def register(body: AuthRequest):
 
     # Register the user in Cognito.
     try:
-        response = client.admin_create_user(
+        client.admin_create_user(
             UserPoolId=USER_POOL_ID,
             Username=body.email,
             TemporaryPassword=body.password,
             MessageAction="SUPPRESS",
         )
-        logger.info(response)
     except client.exceptions.UsernameExistsException:
         logger.error(f"User {body.email} already exists")
         raise HTTPException(status_code=400, detail="User already exists.")
@@ -100,7 +105,19 @@ def register(body: AuthRequest):
         logger.error(f"User {body.email} not found")
         raise HTTPException(status_code=404, detail="User not found.")
 
-    logger.info(f"User {body.email} registered successfully")
+    logger.info(f"User {body.email} registered successfully in Cognito")
+
+    # Prevent double-registration in Dynamo.
+    existing_user = User.safe_get(body.email)
+    if existing_user:
+        logger.error(f"User {body.email} already exists in DynamoDB")
+        raise HTTPException(status_code=400, detail="User already exists.")
+
+    # Register the new User in Dynamo.
+    user = User(email=body.email)
+    user.save()
+
+    logger.info(f"User {body.email} registered successfully in DynamoDB")
 
 
 @router.post("/login")
