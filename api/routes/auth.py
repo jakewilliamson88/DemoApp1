@@ -2,7 +2,10 @@
 This file contains the auth routes for the application.
 """
 
-from fastapi import APIRouter, HTTPException
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from api.constants import USER_POOL_ID
 from api.models.definitions import AccessToken, AuthRequest, User
@@ -19,8 +22,15 @@ logger = init_logger()
 # Get Boto3 w/ a session.
 boto3 = get_sessioned_boto3()
 
+# Dependency for login.
+OAuth2Scheme = Annotated[OAuth2PasswordRequestForm, Depends()]
 
-def get_user(token: AccessToken) -> User:
+# Token dependency.
+oauh2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/login")
+TokenDependency = Annotated[AccessToken, Depends(oauh2_bearer)]
+
+
+def get_user(token: TokenDependency) -> User:
     """
     Get the user from the Cognito User Pool.
     :param token:
@@ -39,6 +49,10 @@ def get_user(token: AccessToken) -> User:
 
     # TODO: Set ID when introducing DynamoDB.
     return User(email=response["Username"], id=0)
+
+
+# Dependency for route access.
+AuthDependency = Annotated[User, Depends(get_user)]
 
 
 @router.post("/register")
@@ -88,8 +102,7 @@ def register(body: AuthRequest):
 
 
 @router.post("/login", response_model=AccessToken)
-def login(body: AuthRequest) -> AccessToken:
-
+def login(body: OAuth2Scheme) -> AccessToken:
     # Get a cognito client.
     cognito_client = boto3.client("cognito-idp")
 
@@ -115,15 +128,18 @@ def login(body: AuthRequest) -> AccessToken:
             ClientId=user_pool_client_id,
             AuthFlow="USER_PASSWORD_AUTH",
             AuthParameters={
-                "USERNAME": body.email,
+                "USERNAME": body.username,
                 "PASSWORD": body.password,
             },
         )
     except cognito_client.exceptions.UserNotFoundException:
-        logger.error(f"User {body.email} not authorized")
+        logger.error(f"User {body.username} not authorized")
+        raise HTTPException(status_code=401, detail="User not authorized.")
+    except cognito_client.exceptions.NotAuthorizedException:
+        logger.error(f"User {body.username} not authorized")
         raise HTTPException(status_code=401, detail="User not authorized.")
 
-    logger.info(f"User {body.email} logged in successfully")
+    logger.info(f"User {body.username} logged in successfully")
 
     # Return the access token.
     access_token = response["AuthenticationResult"]["AccessToken"]
