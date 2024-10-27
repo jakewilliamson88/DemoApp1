@@ -7,5 +7,5 @@ from api.routes.todos import router as todos_router
 app = FastAPI()
 
 # Add routers.
-app.include_router(todos_router)
 app.include_router(auth_router)
+app.include_router(todos_router)
