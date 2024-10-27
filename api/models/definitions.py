@@ -63,9 +63,9 @@ class AuthRequest(BaseModel):
     )
 
 
-class AuthResponse(BaseModel):
+class AccessToken(BaseModel):
     token: str = Field(
         ...,
         title="Token",
-        description="The user's token",
+        description="The user's access token",
     )

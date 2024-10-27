@@ -5,7 +5,7 @@ This file contains the auth routes for the application.
 from fastapi import APIRouter, HTTPException
 
 from api.constants import USER_POOL_ID
-from api.models.definitions import AuthRequest, AuthResponse
+from api.models.definitions import AccessToken, AuthRequest
 from api.utils import get_sessioned_boto3, init_logger
 
 router = APIRouter(
@@ -70,8 +70,8 @@ def register(body: AuthRequest):
     logger.info(f"User {body.email} registered successfully")
 
 
-@router.post("/login", response_model=AuthResponse)
-def login(body: AuthRequest) -> AuthResponse:
+@router.post("/login", response_model=AccessToken)
+def login(body: AuthRequest) -> AccessToken:
 
     # Get a cognito client.
     cognito_client = boto3.client("cognito-idp")
@@ -111,4 +111,4 @@ def login(body: AuthRequest) -> AuthResponse:
 
     # Return the access token.
     access_token = response["AuthenticationResult"]["AccessToken"]
-    return AuthResponse(token=access_token)
+    return AccessToken(token=access_token)
