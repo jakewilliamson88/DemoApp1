@@ -1,5 +1,7 @@
+from datetime import datetime
 from uuid import uuid4
 
+import pytz
 from dyntastic import Dyntastic
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
@@ -33,22 +35,27 @@ class User(Dyntastic):
     )
 
 
-class TodoItem(BaseModel):
+class TodoItem(Dyntastic):
 
     # Table settings.
     __table_name__ = TODO_TABLE_NAME
-    __hash_key__ = "todo_id"
+    __hash_key__ = "owner_id"
+    __range_key__ = "created_at"
 
     # Allow the model to be populated by field name.
     model_config = ConfigDict(
         populate_by_name=True,
     )
 
-    todo_id: int = Field(
+    created_at: str = Field(
+        default_factory=lambda: datetime.now(tz=pytz.UTC).isoformat(),
+        title="Timestamp of when the todo was created",
+        description="Timestamp of when the todo was created",
+    )
+    owner_id: str = Field(
         ...,
-        alias="id",
-        title="The id of the todo item",
-        description="The id of the todo item",
+        title="The id of the user who owns the todo item",
+        description="The id of the user who owns the todo item",
     )
     title: str = Field(
         ...,
@@ -64,6 +71,23 @@ class TodoItem(BaseModel):
     )
     completed: bool = Field(
         False, description="Whether the todo item is completed or not"
+    )
+
+
+class TodoItemRequest(BaseModel):
+    title: NonEmptyString = Field(
+        ...,
+        max_length=80,
+        title="The title of the todo item",
+        examples=["Buy groceries", "Walk the dog"],
+    )
+    description: NonEmptyString = Field(
+        ...,
+        max_length=500,
+        title="The description of the todo item",
+    )
+    completed: bool | None = Field(
+        default=False, description="Whether the todo item is completed or not"
     )
 
 
