@@ -4,6 +4,7 @@ from api.models.definitions import TodoItem
 
 router = APIRouter(
     prefix="/todos",
+    tags=["Todos"],
 )
 
 
