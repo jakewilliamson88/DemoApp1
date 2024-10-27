@@ -11,10 +11,6 @@ class User(BaseModel):
         str_to_lower=True,
     )
 
-    user_id: int = Field(
-        ...,
-        alias="id",
-    )
     email: EmailStr = Field(
         ...,
         title="The email of the user",
