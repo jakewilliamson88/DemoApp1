@@ -3,6 +3,7 @@
 This is a simple "TODO" API that allows users to create, read, update, and delete tasks.
 it is complete with authentication and authorization.
 You can create an account, log in, and create tasks that are only visible to you.
+
 ---
 
 ## Usage
@@ -13,7 +14,6 @@ Requirements:
 * Ability to fork the repo and auto-deploy this API to your AWS account
 
 ## Notes for Potential Employers / Recruiters
-
 
 This app is for demonstration purposes only.
 It is a project I've created to demonstrate different development principles and techniques.
