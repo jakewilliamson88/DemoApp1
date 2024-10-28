@@ -7,6 +7,7 @@ from unittest.mock import Mock, patch
 
 from api.constants import USER_POOL_ID
 from api.models.definitions import AuthRequest
+from api.routes.auth import get_user
 from tests.utils import get_client
 
 
@@ -15,6 +16,37 @@ class TestAuth(TestCase):
     def __init__(self, *args, **kwargs):
         super(TestAuth, self).__init__(*args, **kwargs)
         self.client = get_client()
+
+    @patch("api.routes.auth.boto3")
+    @patch("api.routes.auth.User")
+    def test_get_user(self, mock_user, mock_boto3):
+        """
+        Test the `get_user` function.
+        :return:
+        """
+
+        # Mock boto3 responses.
+        mock_boto3.client.return_value = Mock()
+        mock_boto3.client.return_value.get_user.return_value = {
+            "Username": "foo@bar.com"
+        }
+
+        # Mock the User model.
+        mock_user.safe_get.return_value = mock_user
+
+        # Test the call.
+        user = get_user("spam")
+        self.assertEqual(user, mock_user)
+
+        # Check error path - User not found in Dynamo.
+        mock_user.safe_get.return_value = None
+        with self.assertRaises(Exception):
+            get_user("spam")
+
+        # Check error path - User not found in Cognito.
+        mock_boto3.client.return_value.get_user.side_effect = Exception
+        with self.assertRaises(Exception):
+            get_user("spam")
 
     @patch("api.routes.auth.boto3")
     @patch("api.routes.auth.User")
