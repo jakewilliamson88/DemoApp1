@@ -8,10 +8,37 @@ You can create an account, log in, and create tasks that are only visible to you
 
 ## Usage
 
-TODO: Add usage instructions
+To run this project locally clone this repo, `cd` into the root directory and run the following commands:
 
-Requirements:
-* Ability to fork the repo and auto-deploy this API to your AWS account
+```bash
+# Install dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# Run the FastAPI server
+uvicorn app.main:app --reload
+```
+
+You will see output similar to the following:
+
+```
+INFO:     Will watch for changes in these directories: ['/path/to/DemoApp1']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [72950] using StatReload
+INFO:     Started server process [72952]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+```
+
+Then point your browser to `http://127.0.0.1:8000/docs` to see the Swagger UI.
+
+From there, you can create an account, log in, and create tasks.
+Register a new user with the `POST /users/` endpoint.
+Authenticate with the `Auuthorize` button near the top-right of the page.
+This will authorize your requests to other endpoints with a JWT token.
+
+TODO:
+* Implement and document ability to fork the repo and auto-deploy this API to your AWS account
 
 ## Notes for Potential Employers / Recruiters
 
