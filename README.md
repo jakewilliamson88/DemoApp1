@@ -17,6 +17,7 @@ This app is for demonstration purposes only.
 It is a project I've created to demonstrate different development principles and techniques.
 
 ## Notes for Potential Employers / Recruiters
+
 ---
 
 If you're a potential employer or recruiter, please take note of the following:
