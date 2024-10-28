@@ -16,7 +16,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 # Run the FastAPI server
-uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```
 
 You will see output similar to the following:
