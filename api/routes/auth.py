@@ -72,6 +72,7 @@ def register(body: AuthRequest):
     :param body:
     :return:
     """
+
     logger.info("Registering new user")
 
     # Get a cognito client.

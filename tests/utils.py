@@ -6,5 +6,11 @@ from fastapi.testclient import TestClient
 
 from main import app
 
-# Set up the test client.
-client = TestClient(app)
+
+def get_client():
+    """
+    Get the test client for the application.
+    :return:
+    """
+
+    return TestClient(app)
