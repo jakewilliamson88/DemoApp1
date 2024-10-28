@@ -27,6 +27,15 @@ class TestTodos(TestCase):
 
         app.dependency_overrides[get_user] = dependency_override_get_user
 
+    @staticmethod
+    def _reset_user_dependency():
+        """
+        Reset the `get_user` dependency.
+        :return:
+        """
+
+        app.dependency_overrides[get_user] = get_user
+
     @patch("api.routes.todos.TodoItem")
     def test_get_todos(self, mock_todo_item):
         """
@@ -49,6 +58,9 @@ class TestTodos(TestCase):
 
         todos = client.get("/todos")
         assert todos.status_code == 200
+
+        # Reset
+        self._reset_user_dependency()
 
     @patch("api.routes.todos.TodoItem")
     def test_get_todo(self, mock_todo_item):
@@ -86,6 +98,9 @@ class TestTodos(TestCase):
         todo = client.get("/todos/1900-01-01")
         self.assertEqual(todo.status_code, 200)
 
+        # Reset
+        self._reset_user_dependency()
+
     @patch("api.routes.todos.TodoItem")
     def test_create_todo(self, mock_todo_item):
         """
@@ -116,6 +131,9 @@ class TestTodos(TestCase):
         # Test the route w/ authorization.
         todo = client.post("/todos", json=item_request)
         self.assertEqual(todo.status_code, 200)
+
+        # Reset
+        self._reset_user_dependency()
 
     @patch("api.routes.todos.TodoItem")
     def test_update_todo(self, mock_todo_item):
@@ -169,6 +187,9 @@ class TestTodos(TestCase):
         self.assertEqual(todo_response["title"], item_request["title"])
         self.assertEqual(todo_response["description"], item_request["description"])
 
+        # Reset
+        self._reset_user_dependency()
+
     @patch("api.routes.todos.TodoItem")
     def test_delete_todo(self, mock_todo_item):
         """
@@ -209,3 +230,6 @@ class TestTodos(TestCase):
         # Test the route w/ authorization - Item found.
         todo = client.delete("/todos/1900-01-01")
         self.assertEqual(todo.status_code, 200)
+
+        # Reset
+        self._reset_user_dependency()

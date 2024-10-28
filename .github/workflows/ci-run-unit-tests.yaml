@@ -42,5 +42,5 @@ jobs:
           echo "region=us-east-1" >> ~/.aws/config
 
       - name: Run Unit Tests
-        working-directory: ./api
-        run: python -m pytest
+        working-directory: ./
+        run: python -m pytest --disable-warnings

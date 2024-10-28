@@ -5,7 +5,6 @@ This file contain util functions for the tests.
 from fastapi.testclient import TestClient
 
 from api.models.definitions import User
-from main import app
 
 
 def get_client():
@@ -13,6 +12,8 @@ def get_client():
     Get the test client for the application.
     :return:
     """
+
+    from main import app
 
     return TestClient(app)
 
