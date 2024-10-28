@@ -1,0 +1,50 @@
+name: Black formatter
+
+on:
+  pull_request:
+
+jobs:
+  black:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Install black
+        run: pip install black
+
+      - name: Get changed python files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.py"
+
+      - name: Check changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          black --check --color --diff --quiet ${{ steps.changed-files.outputs.all_changed_files }}
+
+      - name: Check changed file names
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          errors=()
+          for file_path in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            file_name="$(basename "${file_path}")"
+            if [[ "${file_name}" == *"test"* ]]; then
+              if   [[ "${file_name}" == *"_test.py"             ]]; then :
+              else
+                errors+=("${file_path}")
+                echo "  file ""${file_path}"" does not conform to expected test file format."
+                echo "  please rename ${file_path} to match one of the following formats:"
+                echo "    *_test.py - unit test that runs in CI"
+                echo "    *_test_integration.py - integration test that does not run in CI"
+              fi
+            fi
+          done
+
+          if [[ "${#errors[@]}" -eq 0 ]]; then
+            echo "The following outstanding files need to be renamed to indicate that they are a unit test or an integration test:"
+            find . -type "f" -iname "unresolved_*.py" -iname "*test*" | sort | tee >(wc -l >&2)
+          fi
+
+          exit "${#errors[@]}"
