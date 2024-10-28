@@ -34,21 +34,23 @@ If you're a potential employer or recruiter, please take note of the following:
    * - [X] Proper `.gitignore`
    * - [X] Proper branch protections
 4.  - [ ] Use of GitHub Actions for CI/CD
-   * - [ ] Linting
-   * - [ ] Testing
-   * - [ ] Deployment
+    * - [ ] Linting
+    * - [ ] Testing
+    * - [ ] Deployment
 5.  - [ ] Use of AWS Services:
-   * - [X]  Cognito
-   * - [X]  DynamoDB
-   * - [ ]  Lambda
-   * - [ ]  API Gateway
-   * - [ ]  ECR
-   * - [ ]  ECS
+    * - [X]  Cognito
+    * - [X]  DynamoDB
+    * - [ ]  Lambda
+    * - [ ]  API Gateway
+    * - [ ]  ECR
+    * - [ ]  ECS
 6.  - [ ] IaC via CDK:
-   * - [ ]  Cognito
-   * - [ ]  DynamoDB
-   * - [ ]  Lambda
-   * - [ ]  API Gateway
-   * - [ ]  ECR
-   * - [ ]  ECS
-7  - [ ] Automated Testing
+    * - [ ]  Cognito
+    * - [ ]  DynamoDB
+    * - [ ]  Lambda
+    * - [ ]  API Gateway
+    * - [ ]  ECR
+    * - [ ]  ECS
+7. - [X] Automated Testing
+8. - [X] Code Format Enforcement
+9. - [X] Automatic Lint Check
