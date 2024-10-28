@@ -1,4 +1,4 @@
-# Demo App 1
+# Demo App 1 - Todos
 
 This is a simple "TODO" API that allows users to create, read, update, and delete tasks.
 it is complete with authentication and authorization.
