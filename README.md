@@ -28,8 +28,9 @@ If you're a potential employer or recruiter, please take note of the following:
    * - [X] Proper `.gitignore`
    * - [X] Proper branch protections
 4. - [ ] Use of GitHub Actions for CI/CD
-   * - [ ] Linting
-   * - [ ] Testing
+   * - [X] Linting
+   * - [X] Testing
+   * - [X] Formatting
    * - [ ] Deployment
 5. - [ ] Use of AWS Services:
    * - [X]  Cognito
@@ -45,7 +46,4 @@ If you're a potential employer or recruiter, please take note of the following:
    * - [ ]  API Gateway
    * - [ ]  ECR
    * - [ ]  ECS
-7. - [X] Automated Testing
-8. - [X] Automatic Lint Checking
-9. - [X] Automatic Format Checking
-10. - [ ] Documentation
+7. - [ ] Documentation
