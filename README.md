@@ -1,9 +1,11 @@
 # Demo App 1
 
 ---
+
 This is a simple "TODO" API that allows users to create, read, update, and delete tasks.
 it is complete with authentication and authorization.
 You can create an account, log in, and create tasks that are only visible to you.
+
 ---
 
 ## Usage
@@ -15,6 +17,8 @@ Requirement:
 
 This app is for demonstration purposes only.
 It is a project I've created to demonstrate different development principles and techniques.
+
+---
 
 ## Notes for Potential Employers / Recruiters
 
