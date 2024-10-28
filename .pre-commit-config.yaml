@@ -22,21 +22,6 @@ repos:
     rev: 7.1.1
     hooks:
       - id: flake8
-  - repo: https://github.com/jazzband/pip-tools
-    rev: 7.4.1
-    hooks:
-      - id: pip-compile
-        name: pip-compile requirements.in
-        files: ^(.*/)?requirements\.(in|txt)$
-        args: [--output-file=requirements.txt, requirements.in]
-      - id: pip-compile
-        name: pip-compile lambda_requirements/requirements.in
-        files: ^(.*/)?requirements\.(in|txt)$
-        args:
-          [
-            --output-file=lambda_requirements/requirements.txt,
-            lambda_requirements/requirements.in,
-          ]
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
