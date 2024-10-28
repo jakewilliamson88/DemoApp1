@@ -1,0 +1,60 @@
+name: Run Unit Tests
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python env
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Update pip
+        run: pip install --upgrade pip
+
+      - name: Install wheel
+        run: pip install wheel
+
+      - name: Install setup tools
+        run: pip install --upgrade setuptools
+
+      - name: Install Project Requirements
+        run: pip install -r requirements.txt
+
+      - name: Create Empty AWS Credentials File
+        run: |
+          mkdir ~/.aws
+          touch ~/.aws/credentials
+          touch ~/.aws/config
+          echo "[default]" > ~/.aws/config
+          echo "region=us-east-1" >> ~/.aws/config
+
+      - name: Build container
+        run: |
+          docker build --file="api/lambda_tests/Dockerfile" --tag="lambda_container" .
+
+      - name: Start container
+        run: |
+          docker run --detach --publish="8000:80" --publish="9000:8080" --name="lambda_container" "lambda_container"
+          docker exec --detach "lambda_container" bash -c 'uvicorn "endpoint_api:app" --log-level="debug" --host="0.0.0.0" --port="80"'
+
+      - name: Run Unit Tests
+        working-directory: ./api
+        run: python -m pytest
+
+      - name: Stop container
+        if: always()
+        run: |
+          docker stop "lambda_container"
