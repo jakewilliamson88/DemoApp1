@@ -4,9 +4,8 @@ This file contains the App Stack definition.
 
 from aws_cdk import Stack
 from aws_cdk import aws_cognito as cognito
+from constants import APP_NAME
 from constructs import Construct
-
-from api.constants import APP_NAME
 
 
 class TodosAppStack(Stack):
