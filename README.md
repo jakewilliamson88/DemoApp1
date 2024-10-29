@@ -10,12 +10,30 @@ You can create an account, log in, and create tasks that are only visible to you
 
 Recommended python version: `3.12`
 
-To run this project locally clone this repo, `cd` into the root directory and run the following commands:
+To run this project locally clone this repo, `cd` into the root directory and do the following:
+
+If you haven't already, set up your AWS credentials.
+This application uses boto3 which expects your AWS credentials to be in `~/.aws/credentials`.
+You can automate this process by running `aws configure` and following the prompts.
+
+The following commands will install the necessary dependencies, deploy the infrastructure to AWS, and run the FastAPI server.
 
 ```bash
 # Install dependencies
 pip install --upgrade pip
 pip install -r requirements.txt
+
+# Install AWS CDK.
+npm install -g aws-cdk
+
+# View the services that will be deployed (optional).
+cdk diff
+
+# The first time you run this, you'll need to bootstrap the application.
+cdk bootstrap
+
+# Deploy infrastructure on AWS.
+cdk deploy
 
 # Run the FastAPI server
 uvicorn main:app --reload
