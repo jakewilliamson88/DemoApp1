@@ -7,9 +7,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
-from api.constants import USER_POOL_ID
 from api.models.definitions import AccessToken, AuthRequest, User
-from api.utils import get_sessioned_boto3, init_logger
+from api.utils import get_sessioned_boto3, get_user_pool_id, init_logger
+from cdk.constants import USER_POOL_NAME
 
 router = APIRouter(
     prefix="/auth",
@@ -78,10 +78,13 @@ def register(body: AuthRequest):
     # Get a cognito client.
     client = boto3.client("cognito-idp")
 
+    # Get the User Pool ID.
+    user_pool_id = get_user_pool_id(USER_POOL_NAME)
+
     # Register the user in Cognito.
     try:
         client.admin_create_user(
-            UserPoolId=USER_POOL_ID,
+            UserPoolId=user_pool_id,
             Username=body.email,
             TemporaryPassword=body.password,
             MessageAction="SUPPRESS",
@@ -95,7 +98,7 @@ def register(body: AuthRequest):
     try:
         logger.info("Setting user password as permanent")
         client.admin_set_user_password(
-            UserPoolId=USER_POOL_ID,
+            UserPoolId=user_pool_id,
             Username=body.email,
             Password=body.password,
             Permanent=True,
@@ -126,17 +129,20 @@ def login(body: OAuth2Scheme) -> dict:
     # Get a cognito client.
     cognito_client = boto3.client("cognito-idp")
 
+    # Get the User Pool ID.
+    user_pool_id = get_user_pool_id(USER_POOL_NAME)
+
     # Get the User Pool Client from the User Pool ID.
-    user_pool_clients = cognito_client.list_user_pool_clients(UserPoolId=USER_POOL_ID)
+    user_pool_clients = cognito_client.list_user_pool_clients(UserPoolId=user_pool_id)
     user_pool_client = None
     for upc in user_pool_clients["UserPoolClients"]:
-        if upc["UserPoolId"] == USER_POOL_ID:
+        if upc["UserPoolId"] == user_pool_id:
             user_pool_client = upc
             break
 
     # If the client is not found, raise an error.
     if user_pool_client is None:
-        logger.error(f"User Pool Client not found for User Pool ID {USER_POOL_ID}")
+        logger.error(f"User Pool Client not found for User Pool ID {user_pool_id}")
         raise HTTPException(status_code=500, detail="User Pool Client not found")
 
     # Get the User Pool Client ID.
