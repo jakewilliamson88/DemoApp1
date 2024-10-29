@@ -3,9 +3,8 @@ This file is the entry point for the CDK application. It creates the stack and a
 """
 
 import aws_cdk
-
-from api.constants import DEFAULT_REGION
-from cdk.stack import TodosAppStack
+from constants import DEFAULT_REGION
+from stack import TodosAppStack
 
 # Define the CDK App.
 app = aws_cdk.App()
