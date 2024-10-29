@@ -20,12 +20,10 @@ class TodosAppStack(Stack):
             constants.USER_POOL_NAME,
             user_pool_name=constants.USER_POOL_NAME,
             self_sign_up_enabled=True,
-            sign_in_aliases=cognito.SignInAliases(username=True, email=True),
-            auto_verify=cognito.AutoVerifiedAttrs(email=True),
+            sign_in_aliases=cognito.SignInAliases(email=False),
+            auto_verify=cognito.AutoVerifiedAttrs(email=False),
             standard_attributes=cognito.StandardAttributes(
                 email=cognito.StandardAttribute(required=True),
-                given_name=cognito.StandardAttribute(required=True),
-                family_name=cognito.StandardAttribute(required=True),
             ),
             password_policy=cognito.PasswordPolicy(
                 min_length=8,
@@ -34,19 +32,21 @@ class TodosAppStack(Stack):
                 require_uppercase=True,
                 require_symbols=True,
             ),
+            removal_policy=RemovalPolicy.DESTROY,  # Dangerous!!! - only using because this is a demo
         )
 
         # Define the User Pool Client.
         user_pool.add_client(
             constants.USER_POOL_CLIENT_NAME,
             auth_flows=cognito.AuthFlow(user_password=True),
-            generate_secret=True,
+            generate_secret=False,
         )
 
         # Define the Todos Table.
         dynamodb.Table(
             self,
             constants.TODO_TABLE_NAME,
+            table_name=constants.TODO_TABLE_NAME,
             partition_key=dynamodb.Attribute(
                 name="owner_id",
                 type=dynamodb.AttributeType.STRING,
@@ -64,6 +64,7 @@ class TodosAppStack(Stack):
         dynamodb.Table(
             self,
             constants.USER_TABLE_NAME,
+            table_name=constants.USER_TABLE_NAME,
             partition_key=dynamodb.Attribute(
                 name="email",
                 type=dynamodb.AttributeType.STRING,
