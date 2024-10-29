@@ -1,5 +1,5 @@
 """
-This file contains the constants used throughout the application.
+This file contains the constants used throughout the CDK application.
 """
 
 # The default AWS region.
