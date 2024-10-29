@@ -2,8 +2,9 @@
 This file contains the App Stack definition.
 """
 
-from aws_cdk import Stack
+from aws_cdk import RemovalPolicy, Stack
 from aws_cdk import aws_cognito as cognito
+from aws_cdk import aws_dynamodb as dynamodb
 from constants import APP_NAME
 from constructs import Construct
 
@@ -35,8 +36,39 @@ class TodosAppStack(Stack):
             ),
         )
 
+        # Define the User Pool Client.
         user_pool.add_client(
             f"{APP_NAME}UserPoolClient",
             auth_flows=cognito.AuthFlow(user_password=True),
             generate_secret=True,
+        )
+
+        # Define the Todos Table.
+        dynamodb.Table(
+            self,
+            f"{APP_NAME}Todos",
+            partition_key=dynamodb.Attribute(
+                name="owner_id",
+                type=dynamodb.AttributeType.STRING,
+            ),
+            sort_key=dynamodb.Attribute(
+                name="created_at",
+                type=dynamodb.AttributeType.STRING,
+            ),
+            billing_mode=dynamodb.BillingMode.PROVISIONED,
+            table_class=dynamodb.TableClass.STANDARD,
+            removal_policy=RemovalPolicy.DESTROY,
+        )
+
+        # Define the Users Table.
+        dynamodb.Table(
+            self,
+            f"{APP_NAME}Users",
+            partition_key=dynamodb.Attribute(
+                name="email",
+                type=dynamodb.AttributeType.STRING,
+            ),
+            billing_mode=dynamodb.BillingMode.PROVISIONED,
+            table_class=dynamodb.TableClass.STANDARD,
+            removal_policy=RemovalPolicy.DESTROY,
         )
