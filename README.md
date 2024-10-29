@@ -8,6 +8,8 @@ You can create an account, log in, and create tasks that are only visible to you
 
 ## Usage
 
+Recommended python version: `3.12`
+
 To run this project locally clone this repo, `cd` into the root directory and run the following commands:
 
 ```bash
@@ -34,7 +36,7 @@ Then point your browser to `http://127.0.0.1:8000/docs` to see the Swagger UI.
 
 From there, you can create an account, log in, and create tasks.
 Register a new user with the `POST /register/` endpoint.
-Authenticate with the `Auuthorize` button near the top-right of the page.
+Authenticate with the `Authorize` button near the top-right of the page.
 This will authorize your requests to other endpoints with a JWT token.
 
 TODO:
