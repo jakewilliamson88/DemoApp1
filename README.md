@@ -8,6 +8,8 @@ You can create an account, log in, and create tasks that are only visible to you
 
 ## Usage
 
+Recommended python version: `3.12`
+
 To run this project locally clone this repo, `cd` into the root directory and run the following commands:
 
 ```bash
