@@ -2,10 +2,10 @@
 This file contains the App Stack definition.
 """
 
+import constants
 from aws_cdk import RemovalPolicy, Stack
 from aws_cdk import aws_cognito as cognito
 from aws_cdk import aws_dynamodb as dynamodb
-from constants import APP_NAME
 from constructs import Construct
 
 
@@ -17,8 +17,8 @@ class TodosAppStack(Stack):
         # Define the User Pool.
         user_pool = cognito.UserPool(
             self,
-            f"{APP_NAME}UserPool",
-            user_pool_name=f"{APP_NAME}UserPool",
+            constants.USER_POOL_NAME,
+            user_pool_name=constants.USER_POOL_NAME,
             self_sign_up_enabled=True,
             sign_in_aliases=cognito.SignInAliases(username=True, email=True),
             auto_verify=cognito.AutoVerifiedAttrs(email=True),
@@ -38,7 +38,7 @@ class TodosAppStack(Stack):
 
         # Define the User Pool Client.
         user_pool.add_client(
-            f"{APP_NAME}UserPoolClient",
+            constants.USER_POOL_CLIENT_NAME,
             auth_flows=cognito.AuthFlow(user_password=True),
             generate_secret=True,
         )
@@ -46,7 +46,7 @@ class TodosAppStack(Stack):
         # Define the Todos Table.
         dynamodb.Table(
             self,
-            f"{APP_NAME}Todos",
+            constants.TODO_TABLE_NAME,
             partition_key=dynamodb.Attribute(
                 name="owner_id",
                 type=dynamodb.AttributeType.STRING,
@@ -63,7 +63,7 @@ class TodosAppStack(Stack):
         # Define the Users Table.
         dynamodb.Table(
             self,
-            f"{APP_NAME}Users",
+            constants.USER_TABLE_NAME,
             partition_key=dynamodb.Attribute(
                 name="email",
                 type=dynamodb.AttributeType.STRING,
