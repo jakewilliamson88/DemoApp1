@@ -33,7 +33,7 @@ INFO:     Application startup complete.
 Then point your browser to `http://127.0.0.1:8000/docs` to see the Swagger UI.
 
 From there, you can create an account, log in, and create tasks.
-Register a new user with the `POST /users/` endpoint.
+Register a new user with the `POST /register/` endpoint.
 Authenticate with the `Auuthorize` button near the top-right of the page.
 This will authorize your requests to other endpoints with a JWT token.
 
