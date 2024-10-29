@@ -34,3 +34,19 @@ def get_sessioned_boto3():
 
     boto3.setup_default_session(profile_name=os.environ.get("AWS_PROFILE_NAME"))
     return boto3
+
+
+def get_user_pool_id(user_pool_name: str) -> str:
+    """
+    Return the User Pool ID
+    :return:
+    """
+
+    # Get a sessioned client.
+    client = get_sessioned_boto3().client("cognito-idp")
+
+    # Get the User Pool ID.
+    pools = client.list_user_pools()
+    for pool in pools["UserPools"]:
+        if pool["Name"] == user_pool_name:
+            return pool["Id"]
