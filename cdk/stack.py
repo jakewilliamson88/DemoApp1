@@ -4,9 +4,8 @@ This file contains the App Stack definition.
 
 from aws_cdk import Stack
 from aws_cdk import aws_cognito as cognito
+from constants import APP_NAME
 from constructs import Construct
-
-from api.constants import APP_NAME
 
 
 class TodosAppStack(Stack):
@@ -17,7 +16,7 @@ class TodosAppStack(Stack):
         # Define the User Pool.
         user_pool = cognito.UserPool(
             self,
-            "UserPool",
+            f"{APP_NAME}UserPool",
             user_pool_name=f"{APP_NAME}UserPool",
             self_sign_up_enabled=True,
             sign_in_aliases=cognito.SignInAliases(username=True, email=True),
