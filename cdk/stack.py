@@ -16,7 +16,7 @@ class TodosAppStack(Stack):
         # Define the User Pool.
         user_pool = cognito.UserPool(
             self,
-            "UserPool",
+            f"{APP_NAME}UserPool",
             user_pool_name=f"{APP_NAME}UserPool",
             self_sign_up_enabled=True,
             sign_in_aliases=cognito.SignInAliases(username=True, email=True),
