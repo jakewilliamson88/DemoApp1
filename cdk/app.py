@@ -2,33 +2,18 @@
 This file is the entry point for the CDK application. It creates the stack and adds the resources to it.
 """
 
-from aws_cdk import Stack
-from aws_cdk import aws_cognito as cognito
-from constructs import Construct
+import aws_cdk
 
+from api.constants import DEFAULT_REGION
+from cdk.stack import TodosAppStack
 
-class TodosAppStack(Stack):
+# Define the CDK App.
+app = aws_cdk.App()
 
-    def __init__(self, scope: Construct, stack_id: str, **kwargs) -> None:
-        super().__init__(scope, stack_id, **kwargs)
+# Create the Stack.
+stack = TodosAppStack(
+    app, "TodosAppStack", env=aws_cdk.Environment(region=DEFAULT_REGION)
+)
 
-        # The code that defines your stack goes here
-        user_pool = cognito.UserPool(
-            self,
-            "UserPool",
-            user_pool_name="TodosUserPool",
-            self_sign_up_enabled=True,
-            sign_in_aliases=cognito.SignInAliases(username=True, email=True),
-            auto_verify=cognito.AutoVerifiedAttrs(email=True),
-            standard_attributes=cognito.StandardAttributes(
-                email=cognito.StandardAttribute(required=True),
-                given_name=cognito.StandardAttribute(required=True),
-                family_name=cognito.StandardAttribute(required=True),
-            ),
-        )
-
-        user_pool.add_client(
-            "UserPoolClient",
-            auth_flows=cognito.AuthFlow(user_password=True),
-            generate_secret=True,
-        )
+# Generate the CloudFormation template.
+app.synth()
