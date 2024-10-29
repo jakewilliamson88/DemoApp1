@@ -46,7 +46,7 @@ def get_user_pool_id(user_pool_name: str) -> str:
     client = get_sessioned_boto3().client("cognito-idp")
 
     # Get the User Pool ID.
-    pools = client.list_user_pools()
+    pools = client.list_user_pools(MaxResults=10)
     for pool in pools["UserPools"]:
         if pool["Name"] == user_pool_name:
             return pool["Id"]
