@@ -57,6 +57,12 @@ Register a new user with the `POST /register/` endpoint.
 Authenticate with the `Authorize` button near the top-right of the page.
 This will authorize your requests to other endpoints with a JWT token.
 
+To automatically tear down the infrastructure, run the following command:
+
+```bash
+cdk destroy
+```
+
 TODO:
 * Implement and document ability to fork the repo and auto-deploy this API to your AWS account
 
