@@ -63,8 +63,6 @@ To automatically tear down the infrastructure, run the following command:
 cdk destroy
 ```
 
-TODO:
-* Implement and document ability to fork the repo and auto-deploy this API to your AWS account
 
 ## Notes for Potential Employers / Recruiters
 
@@ -93,10 +91,11 @@ If you're a potential employer or recruiter, please take note of the following:
    * - [ ]  ECR
    * - [ ]  ECS
 6. - [ ] IaC via CDK:
-   * - [ ]  Cognito
-   * - [ ]  DynamoDB
+   * - [X]  Cognito
+   * - [X]  DynamoDB
    * - [ ]  Lambda
    * - [ ]  API Gateway
    * - [ ]  ECR
    * - [ ]  ECS
-7. - [ ] Documentation
+7. - [X] Docker
+8. - [ ] Documentation
