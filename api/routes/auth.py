@@ -26,7 +26,7 @@ boto3 = get_sessioned_boto3()
 OAuth2Scheme = Annotated[OAuth2PasswordRequestForm, Depends()]
 
 # Token dependency.
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/v1/auth/login")
 TokenDependency = Annotated[str, Depends(oauth2_bearer)]
 
 
