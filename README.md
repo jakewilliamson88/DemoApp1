@@ -78,11 +78,11 @@ If you're a potential employer or recruiter, please take note of the following:
    * - [X] Proper documentation
    * - [X] Proper `.gitignore`
    * - [X] Proper branch protections
-4. - [ ] Use of GitHub Actions for CI/CD
+4. - [X] Use of GitHub Actions for CI/CD
    * - [X] Linting
    * - [X] Testing
    * - [X] Formatting
-   * - [ ] Deployment
+   * - [X] Deployment
 5. - [X] Use of AWS Services:
    * - [X]  Cognito
    * - [X]  DynamoDB
