@@ -86,16 +86,12 @@ If you're a potential employer or recruiter, please take note of the following:
 5. - [ ] Use of AWS Services:
    * - [X]  Cognito
    * - [X]  DynamoDB
-   * - [ ]  Lambda
+   * - [X]  Lambda
    * - [ ]  API Gateway
-   * - [ ]  ECR
-   * - [ ]  ECS
 6. - [ ] IaC via CDK:
    * - [X]  Cognito
    * - [X]  DynamoDB
-   * - [ ]  Lambda
+   * - [X]  Lambda
    * - [ ]  API Gateway
-   * - [ ]  ECR
-   * - [ ]  ECS
 7. - [X] Docker
 8. - [ ] Documentation
