@@ -83,7 +83,7 @@ If you're a potential employer or recruiter, please take note of the following:
    * - [X] Testing
    * - [X] Formatting
    * - [ ] Deployment
-5. - [ ] Use of AWS Services:
+5. - [X] Use of AWS Services:
    * - [X]  Cognito
    * - [X]  DynamoDB
    * - [X]  Lambda
