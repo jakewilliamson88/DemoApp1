@@ -88,7 +88,7 @@ If you're a potential employer or recruiter, please take note of the following:
    * - [X]  DynamoDB
    * - [X]  Lambda
    * - [X]  API Gateway
-6. - [ ] IaC via CDK:
+6. - [X] IaC via CDK:
    * - [X]  Cognito
    * - [X]  DynamoDB
    * - [X]  Lambda
