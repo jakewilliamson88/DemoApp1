@@ -47,7 +47,7 @@ class TodosAppStack(Stack):
         )
 
         # Define the Todos Table.
-        todos_table = dynamodb.Table(
+        dynamodb.Table(
             self,
             constants.TODO_TABLE_NAME,
             table_name=constants.TODO_TABLE_NAME,
@@ -65,7 +65,7 @@ class TodosAppStack(Stack):
         )
 
         # Define the Users Table.
-        users_table = dynamodb.Table(
+        dynamodb.Table(
             self,
             constants.USER_TABLE_NAME,
             table_name=constants.USER_TABLE_NAME,
@@ -98,11 +98,7 @@ class TodosAppStack(Stack):
                     "cognito-idp:*",
                     "dynamodb:*",
                 ],
-                resources=[
-                    user_pool.user_pool_arn,
-                    todos_table.table_arn,
-                    users_table.table_arn,
-                ],
+                resources=["*"],
             )
         )
 
