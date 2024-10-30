@@ -87,11 +87,11 @@ If you're a potential employer or recruiter, please take note of the following:
    * - [X]  Cognito
    * - [X]  DynamoDB
    * - [X]  Lambda
-   * - [ ]  API Gateway
+   * - [X]  API Gateway
 6. - [ ] IaC via CDK:
    * - [X]  Cognito
    * - [X]  DynamoDB
    * - [X]  Lambda
-   * - [ ]  API Gateway
+   * - [X]  API Gateway
 7. - [X] Docker
-8. - [ ] Documentation
+8. - [X] Documentation
