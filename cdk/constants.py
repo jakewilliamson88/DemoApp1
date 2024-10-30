@@ -26,3 +26,6 @@ ECR_REPO_NAME = f"{APP_NAME}Repo"
 
 # The Lambda function name for the Todos API.
 API_LAMBDA_NAME = f"{APP_NAME}FastAPIHandler"
+
+#: The name of the API Gateway.
+API_NAME = f"{APP_NAME}Api"

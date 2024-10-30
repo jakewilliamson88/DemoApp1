@@ -5,7 +5,7 @@ This file contains the App Stack definition.
 import os
 
 import constants
-from aws_cdk import RemovalPolicy, Stack
+from aws_cdk import RemovalPolicy, Stack, aws_apigateway
 from aws_cdk import aws_cognito as cognito
 from aws_cdk import aws_dynamodb as dynamodb
 from aws_cdk import aws_lambda as lambda_
@@ -79,8 +79,23 @@ class TodosAppStack(Stack):
 
         # Create the Lambda function for the Todos API.
         dockerfile_path = os.path.join(os.path.dirname(__file__), "..")
-        lambda_.DockerImageFunction(
+        handler = lambda_.DockerImageFunction(
             self,
             constants.API_LAMBDA_NAME,
             code=lambda_.DockerImageCode.from_image_asset(dockerfile_path),
+        )
+
+        # Create the API Gateway.
+        api = aws_apigateway.RestApi(
+            self,
+            constants.API_NAME,
+            rest_api_name=constants.API_NAME,
+            description="Demo API Gateway for Todos App",
+        )
+
+        # Add the Lambda integration to the API Gateway.
+        resource = api.root.resource_for_path("v2")
+        resource.add_method(
+            "ANY",
+            aws_apigateway.LambdaIntegration(handler),
         )
