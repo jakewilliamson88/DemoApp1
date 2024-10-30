@@ -29,3 +29,6 @@ API_LAMBDA_NAME = f"{APP_NAME}FastAPIHandler"
 
 #: The name of the API Gateway.
 API_NAME = f"{APP_NAME}Api"
+
+#: The timeout for the Lambda function.
+LAMBDA_TIMEOUT = 5
