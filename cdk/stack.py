@@ -2,10 +2,13 @@
 This file contains the App Stack definition.
 """
 
+import os
+
 import constants
 from aws_cdk import RemovalPolicy, Stack
 from aws_cdk import aws_cognito as cognito
 from aws_cdk import aws_dynamodb as dynamodb
+from aws_cdk import aws_lambda as lambda_
 from constructs import Construct
 
 
@@ -72,4 +75,12 @@ class TodosAppStack(Stack):
             billing_mode=dynamodb.BillingMode.PROVISIONED,
             table_class=dynamodb.TableClass.STANDARD,
             removal_policy=RemovalPolicy.DESTROY,
+        )
+
+        # Create the Lambda function for the Todos API.
+        dockerfile_path = os.path.join(os.path.dirname(__file__), "..")
+        lambda_.DockerImageFunction(
+            self,
+            constants.API_LAMBDA_NAME,
+            code=lambda_.DockerImageCode.from_image_asset(dockerfile_path),
         )
