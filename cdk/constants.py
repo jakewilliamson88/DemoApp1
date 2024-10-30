@@ -32,3 +32,6 @@ API_NAME = f"{APP_NAME}Api"
 
 #: The timeout for the Lambda function.
 LAMBDA_TIMEOUT = 5
+
+#: The name of the IAM Role for the Lambda function.
+LAMBDA_ROLE_NAME = f"{APP_NAME}LambdaRole"

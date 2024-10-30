@@ -8,6 +8,7 @@ import constants
 from aws_cdk import Duration, RemovalPolicy, Stack, aws_apigateway
 from aws_cdk import aws_cognito as cognito
 from aws_cdk import aws_dynamodb as dynamodb
+from aws_cdk import aws_iam as iam
 from aws_cdk import aws_lambda as lambda_
 from constructs import Construct
 
@@ -46,7 +47,7 @@ class TodosAppStack(Stack):
         )
 
         # Define the Todos Table.
-        dynamodb.Table(
+        todos_table = dynamodb.Table(
             self,
             constants.TODO_TABLE_NAME,
             table_name=constants.TODO_TABLE_NAME,
@@ -64,7 +65,7 @@ class TodosAppStack(Stack):
         )
 
         # Define the Users Table.
-        dynamodb.Table(
+        users_table = dynamodb.Table(
             self,
             constants.USER_TABLE_NAME,
             table_name=constants.USER_TABLE_NAME,
@@ -84,6 +85,25 @@ class TodosAppStack(Stack):
             constants.API_LAMBDA_NAME,
             code=lambda_.DockerImageCode.from_image_asset(dockerfile_path),
             timeout=Duration.seconds(constants.LAMBDA_TIMEOUT),
+            logging_format=lambda_.LoggingFormat.JSON,
+            application_log_level_v2=lambda_.ApplicationLogLevel.INFO,
+        )
+
+        # Let Lambda talk to Cognito and DynamoDB.
+        # TODO: This is too permissive. Lock down the permissions.
+        handler.add_to_role_policy(
+            iam.PolicyStatement(
+                effect=iam.Effect.ALLOW,
+                actions=[
+                    "cognito-idp:*",
+                    "dynamodb:*",
+                ],
+                resources=[
+                    user_pool.user_pool_arn,
+                    todos_table.table_arn,
+                    users_table.table_arn,
+                ],
+            )
         )
 
         # Create the API Gateway.
