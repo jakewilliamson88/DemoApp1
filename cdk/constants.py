@@ -20,3 +20,9 @@ USER_TABLE_NAME = f"{APP_NAME}Users"
 
 # DynamoDB Table for Todos.
 TODO_TABLE_NAME = f"{APP_NAME}Todos"
+
+# The ECR Repository name for the Docker container.
+ECR_REPO_NAME = f"{APP_NAME}Repo"
+
+# The Lambda function name for the Todos API.
+API_LAMBDA_NAME = f"{APP_NAME}FastAPIHandler"
