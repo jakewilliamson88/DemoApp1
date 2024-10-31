@@ -47,16 +47,8 @@ def get_user(token: TokenDependency) -> User:
         logger.error("User not authorized")
         raise HTTPException(status_code=401, detail="User not authorized.")
 
-    # Get the User from Dynamo.
-    email = response["Username"]
-    user = User.safe_get(email)
-
-    # If the user is not found, raise an error.
-    if not user:
-        logger.error(f"User {email} not found")
-        raise HTTPException(status_code=404, detail="User not found.")
-
-    return user
+    # Get the User model.
+    return User(email=response["Username"])
 
 
 # Dependency for route access.
