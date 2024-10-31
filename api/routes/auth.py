@@ -47,16 +47,8 @@ def get_user(token: TokenDependency) -> User:
         logger.error("User not authorized")
         raise HTTPException(status_code=401, detail="User not authorized.")
 
-    # Get the User from Dynamo.
-    email = response["Username"]
-    user = User.safe_get(email)
-
-    # If the user is not found, raise an error.
-    if not user:
-        logger.error(f"User {email} not found")
-        raise HTTPException(status_code=404, detail="User not found.")
-
-    return user
+    # Get the User model.
+    return User(email=response["Username"])
 
 
 # Dependency for route access.
@@ -110,18 +102,6 @@ def register(body: AuthRequest):
         raise HTTPException(status_code=404, detail="User not found.")
 
     logger.info(f"User {body.email} registered successfully in Cognito")
-
-    # Prevent double-registration in Dynamo.
-    existing_user = User.safe_get(body.email)
-    if existing_user:
-        logger.error(f"User {body.email} already exists in DynamoDB")
-        raise HTTPException(status_code=400, detail="User already exists.")
-
-    # Register the new User in Dynamo.
-    user = User(email=body.email)
-    user.save()
-
-    logger.info(f"User {body.email} registered successfully in DynamoDB")
 
 
 @router.post("/login")

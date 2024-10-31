@@ -64,20 +64,6 @@ class TodosAppStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
         )
 
-        # Define the Users Table.
-        dynamodb.Table(
-            self,
-            constants.USER_TABLE_NAME,
-            table_name=constants.USER_TABLE_NAME,
-            partition_key=dynamodb.Attribute(
-                name="email",
-                type=dynamodb.AttributeType.STRING,
-            ),
-            billing_mode=dynamodb.BillingMode.PROVISIONED,
-            table_class=dynamodb.TableClass.STANDARD,
-            removal_policy=RemovalPolicy.DESTROY,
-        )
-
         # Create the Lambda function for the Todos API.
         dockerfile_path = os.path.join(os.path.dirname(__file__), "..")
         handler = lambda_.DockerImageFunction(

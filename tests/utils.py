@@ -27,5 +27,4 @@ def dependency_override_get_user():
     return User(
         email="foo@bar.com",
         password="password",
-        user_id="-1",
     )
