@@ -41,7 +41,7 @@ class TodoItem(Dyntastic):
         title="Timestamp of when the todo was created",
         description="Timestamp of when the todo was created",
     )
-    owner_id: EmailStr = Field(
+    owner_id: str = Field(
         ...,
         title="The email of the user who owns the todo item",
         description="The email of the user who owns the todo item",
