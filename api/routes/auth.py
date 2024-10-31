@@ -109,12 +109,6 @@ def register(body: AuthRequest):
         logger.error(f"User {body.email} already exists in DynamoDB")
         raise HTTPException(status_code=400, detail="User already exists.")
 
-    # Register the new User in Dynamo.
-    user = User(email=body.email)
-    user.save()
-
-    logger.info(f"User {body.email} registered successfully in DynamoDB")
-
 
 @router.post("/login")
 def login(body: OAuth2Scheme) -> dict:
