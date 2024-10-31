@@ -60,7 +60,7 @@ def create_todo(user: AuthDependency, request: TodoItemRequest) -> None:
 
     try:
         todo = TodoItem(
-            owner_id=user.user_id,
+            owner_id=user.email,
             title=request.title,
             description=request.description,
             completed=False,
@@ -87,7 +87,7 @@ def update_todo(
 
     # Get the TodoItem from Dynamo.
     try:
-        todo = TodoItem.get(user.user_id, created_at)
+        todo = TodoItem.get(user.email, created_at)
     except DoesNotExist:
         logger.info(f"Todo {created_at} not found")
         raise HTTPException(status_code=404, detail="Todo not found.")
@@ -112,7 +112,7 @@ def delete_todo(user: AuthDependency, created_at: str) -> None:
 
     # Get the TodoItem from Dynamo.
     try:
-        todo = TodoItem.get(user.user_id, created_at)
+        todo = TodoItem.get(user.email, created_at)
     except DoesNotExist:
         logger.info(f"Todo {created_at} not found")
         raise HTTPException(status_code=404, detail="Todo not found.")
