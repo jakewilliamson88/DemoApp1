@@ -12,8 +12,11 @@ To run this app, follow the instructions below:
 1. Create an AWS account
 2. Create an IAM user and create credentials.
 3. Add those credentials to Github under the secrets section.
+
 ![img.png](img.png)
+
 ![img_1.png](img_1.png)
+
 
 4. Run the `Manual API Deploy` Github Action.
 
