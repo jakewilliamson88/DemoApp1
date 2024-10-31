@@ -8,7 +8,7 @@ You can create an account, log in, and create tasks that are only visible to you
 
 ## Usage
 
-To run this app, follow the instructions below:
+To run this app, fork this repo and follow the instructions below:
 1. Create an AWS account
 2. Create an IAM user and create credentials.
 3. Add those credentials to Github under the secrets section.
