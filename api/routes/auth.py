@@ -103,12 +103,6 @@ def register(body: AuthRequest):
 
     logger.info(f"User {body.email} registered successfully in Cognito")
 
-    # Prevent double-registration in Dynamo.
-    existing_user = User.safe_get(body.email)
-    if existing_user:
-        logger.error(f"User {body.email} already exists in DynamoDB")
-        raise HTTPException(status_code=400, detail="User already exists.")
-
 
 @router.post("/login")
 def login(body: OAuth2Scheme) -> dict:
