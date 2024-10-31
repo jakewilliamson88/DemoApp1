@@ -8,56 +8,18 @@ You can create an account, log in, and create tasks that are only visible to you
 
 ## Usage
 
-Recommended python version: `3.12`
+To run this app, follow the instructions below:
+1. Create an AWS account
+2. Create an IAM user and create credentials.
+3. Add those credentials to Github under the secrets section.
+![img.png](img.png)
+![img_1.png](img_1.png)
 
-To run this project locally clone this repo, `cd` into the root directory and do the following:
+4. Run the `Manual API Deploy` Github Action.
 
-If you haven't already, set up your AWS credentials.
-This application uses boto3 which expects your AWS credentials to be in `~/.aws/credentials`.
-You can automate this process by running `aws configure` and following the prompts.
+This will create the necessary infrastructure on AWS, build the Docker image, and deploy the app to AWS.
 
-The following commands will install the necessary dependencies, deploy the infrastructure to AWS, and run the FastAPI server.
-
-```bash
-# Install dependencies
-pip install --upgrade pip
-pip install -r requirements.txt
-
-# Install AWS CDK.
-npm install -g aws-cdk
-
-# View the services that will be deployed (optional).
-cdk diff
-
-# The first time you run this, you'll need to bootstrap the application.
-cdk bootstrap
-
-# Deploy infrastructure on AWS.
-cdk deploy
-
-# Run the FastAPI server
-uvicorn main:app --reload
-```
-
-You will see output similar to the following:
-
-```
-INFO:     Will watch for changes in these directories: ['/path/to/DemoApp1']
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [72950] using StatReload
-INFO:     Started server process [72952]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-```
-
-Then point your browser to `http://127.0.0.1:8000/docs` to see the Swagger UI.
-
-From there, you can create an account, log in, and create tasks.
-Register a new user with the `POST /register/` endpoint.
-Authenticate with the `Authorize` button near the top-right of the page.
-This will authorize your requests to other endpoints with a JWT token.
-
-To automatically tear down the infrastructure, run the following command:
+To destroy the infrastructure, make sure you have `cdk` install by running `npm i -g cdk` and AWS credentials configured in your environment. Then run the following command:
 
 ```bash
 cdk destroy
