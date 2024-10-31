@@ -26,7 +26,7 @@ def get_todos(user: AuthDependency) -> list[TodoItem]:
 
     # Get the User's Todos from Dynamo.
     try:
-        todos = TodoItem.query(user.user_id)
+        todos = TodoItem.query(user.email)
         return [todo for todo in todos]
     except DoesNotExist:
         logger.info(f"User {user.email} does not have any Todos yet")
@@ -43,7 +43,7 @@ def get_todo(user: AuthDependency, created_at: str) -> TodoItem:
     """
 
     try:
-        return TodoItem.get(user.user_id, created_at)
+        return TodoItem.get(user.email, created_at)
     except DoesNotExist:
         logger.info(f"Todo {created_at} not found")
         raise HTTPException(status_code=404, detail="Todo not found.")
@@ -60,7 +60,7 @@ def create_todo(user: AuthDependency, request: TodoItemRequest) -> None:
 
     try:
         todo = TodoItem(
-            owner_id=user.user_id,
+            owner_id=user.email,
             title=request.title,
             description=request.description,
             completed=False,
@@ -87,7 +87,7 @@ def update_todo(
 
     # Get the TodoItem from Dynamo.
     try:
-        todo = TodoItem.get(user.user_id, created_at)
+        todo = TodoItem.get(user.email, created_at)
     except DoesNotExist:
         logger.info(f"Todo {created_at} not found")
         raise HTTPException(status_code=404, detail="Todo not found.")
@@ -112,7 +112,7 @@ def delete_todo(user: AuthDependency, created_at: str) -> None:
 
     # Get the TodoItem from Dynamo.
     try:
-        todo = TodoItem.get(user.user_id, created_at)
+        todo = TodoItem.get(user.email, created_at)
     except DoesNotExist:
         logger.info(f"Todo {created_at} not found")
         raise HTTPException(status_code=404, detail="Todo not found.")

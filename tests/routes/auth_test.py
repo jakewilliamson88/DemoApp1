@@ -17,30 +17,21 @@ class TestAuth(TestCase):
         self.client = get_client()
 
     @patch("api.routes.auth.boto3")
-    @patch("api.routes.auth.User")
-    def test_get_user(self, mock_user, mock_boto3):
+    def test_get_user(self, mock_boto3):
         """
         Test the `get_user` function.
         :return:
         """
 
         # Mock boto3 responses.
-        mock_boto3.client.return_value = Mock()
+        mock_boto3.client.return_value = Mock(email="foo@bar.com")
         mock_boto3.client.return_value.get_user.return_value = {
             "Username": "foo@bar.com"
         }
 
-        # Mock the User model.
-        mock_user.safe_get.return_value = mock_user
-
         # Test the call.
-        user = get_user("spam")
-        self.assertEqual(user, mock_user)
-
-        # Check error path - User not found in Dynamo.
-        mock_user.safe_get.return_value = None
-        with self.assertRaises(Exception):
-            get_user("spam")
+        user = get_user("token")
+        self.assertEqual(user.email, "foo@bar.com")
 
         # Check error path - User not found in Cognito.
         mock_boto3.client.return_value.get_user.side_effect = Exception
@@ -49,8 +40,7 @@ class TestAuth(TestCase):
 
     @patch("api.routes.auth.get_user_pool_id")
     @patch("api.routes.auth.boto3")
-    @patch("api.routes.auth.User")
-    def test_register(self, mock_user, mock_boto3, mock_get_user_pool_id):
+    def test_register(self, mock_boto3, mock_get_user_pool_id):
         """
         Test the register route.
         """
@@ -60,10 +50,6 @@ class TestAuth(TestCase):
 
         # Mock boto3 responses.
         mock_boto3.client.return_value = Mock()
-
-        # Mock the User model.
-        mock_user.safe_get.return_value = None
-        mock_user.save.return_value = None
 
         # Define the request body.
         request = AuthRequest(email="foo@bar.com", password="password")
