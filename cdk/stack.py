@@ -89,6 +89,7 @@ class TodosAppStack(Stack):
                     "cognito-idp:InitiateAuth",
                     "dynamodb:GetItem",
                     "dynamodb:PutItem",
+                    "dynamodb:DeleteItem",
                     "dynamodb:Query",
                 ],
                 resources=["*"],
