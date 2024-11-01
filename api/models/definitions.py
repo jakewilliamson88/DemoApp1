@@ -4,8 +4,8 @@ import pytz
 from dyntastic import Dyntastic
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
-from api.constants import TODO_TABLE_NAME
 from api.models.types import NonEmptyString
+from cdk.constants import TODO_TABLE_NAME
 
 
 class User(BaseModel):
