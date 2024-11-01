@@ -81,8 +81,16 @@ class TodosAppStack(Stack):
             iam.PolicyStatement(
                 effect=iam.Effect.ALLOW,
                 actions=[
-                    "cognito-idp:*",
-                    "dynamodb:*",
+                    "cognito-idp:GetUser",
+                    "cognito-idp:AdminCreateUser",
+                    "cognito-idp:AdminSetUserPassword",
+                    "cognito-idp:ListUserPools",
+                    "cognito-idp:ListUserPoolClients",
+                    "cognito-idp:InitiateAuth",
+                    "dynamodb:GetItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:Query",
                 ],
                 resources=["*"],
             )

@@ -107,13 +107,13 @@ def register(body: AuthRequest):
 @router.post("/login")
 def login(body: OAuth2Scheme) -> dict:
     # Get a cognito client.
-    cognito_client = boto3.client("cognito-idp")
+    client = boto3.client("cognito-idp")
 
     # Get the User Pool ID.
     user_pool_id = get_user_pool_id(USER_POOL_NAME)
 
     # Get the User Pool Client from the User Pool ID.
-    user_pool_clients = cognito_client.list_user_pool_clients(UserPoolId=user_pool_id)
+    user_pool_clients = client.list_user_pool_clients(UserPoolId=user_pool_id)
     user_pool_client = None
     for upc in user_pool_clients["UserPoolClients"]:
         if upc["UserPoolId"] == user_pool_id:
@@ -130,7 +130,7 @@ def login(body: OAuth2Scheme) -> dict:
 
     # Initiate the authentication flow.
     try:
-        response = cognito_client.initiate_auth(
+        response = client.initiate_auth(
             ClientId=user_pool_client_id,
             AuthFlow="USER_PASSWORD_AUTH",
             AuthParameters={
@@ -138,10 +138,10 @@ def login(body: OAuth2Scheme) -> dict:
                 "PASSWORD": body.password,
             },
         )
-    except cognito_client.exceptions.UserNotFoundException:
+    except client.exceptions.UserNotFoundException:
         logger.error(f"User {body.username} not authorized")
         raise HTTPException(status_code=401, detail="User not authorized.")
-    except cognito_client.exceptions.NotAuthorizedException:
+    except client.exceptions.NotAuthorizedException:
         logger.error(f"User {body.username} not authorized")
         raise HTTPException(status_code=401, detail="User not authorized.")
 
