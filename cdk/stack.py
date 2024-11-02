@@ -76,7 +76,6 @@ class TodosAppStack(Stack):
         )
 
         # Let Lambda talk to Cognito and DynamoDB.
-        # TODO: This is too permissive. Lock down the permissions.
         handler.add_to_role_policy(
             iam.PolicyStatement(
                 effect=iam.Effect.ALLOW,
