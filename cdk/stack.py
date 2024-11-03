@@ -73,6 +73,7 @@ class TodosAppStack(Stack):
             timeout=Duration.seconds(constants.LAMBDA_TIMEOUT),
             logging_format=lambda_.LoggingFormat.JSON,
             application_log_level_v2=lambda_.ApplicationLogLevel.INFO,
+            reserved_concurrent_executions=1,
         )
 
         # Let Lambda talk to Cognito and DynamoDB.
