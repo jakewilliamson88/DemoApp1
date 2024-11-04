@@ -126,7 +126,7 @@ class TestTodos(TestCase):
 
         # Test the route w/ authorization.
         todo = client.post("/todos", json=item_request)
-        self.assertEqual(todo.status_code, 200)
+        self.assertEqual(todo.status_code, 201)
 
     @patch("api.routes.todos.TodoItem")
     def test_update_todo(self, mock_todo_item):
