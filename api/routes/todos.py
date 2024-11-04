@@ -49,7 +49,7 @@ def get_todo(user: AuthDependency, created_at: str) -> TodoItem:
         raise HTTPException(status_code=404, detail="Todo not found.")
 
 
-@router.post("/")
+@router.post("/", status_code=201)
 def create_todo(user: AuthDependency, request: TodoItemRequest) -> None:
     """
     Create a new TodoItem for the User in Dynamo.
@@ -71,6 +71,8 @@ def create_todo(user: AuthDependency, request: TodoItemRequest) -> None:
         logger.error(f"Failed to create Todo for {user.email}")
         logger.exception(e)
         raise HTTPException(status_code=500, detail="Failed to create Todo.")
+
+    #
 
 
 @router.put("/{created_at}")

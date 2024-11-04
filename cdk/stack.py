@@ -46,6 +46,8 @@ class TodosAppStack(Stack):
             generate_secret=False,
         )
 
+        # TODO: Create VPC and VPC Endpoints for DynamoDB.
+
         # Define the Todos Table.
         dynamodb.Table(
             self,
