@@ -38,4 +38,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Deploy
-        run: cdk deploy --require-approval never --all
+        run: |
+          cdk bootstrap
+          cdk deploy --require-approval never --all
